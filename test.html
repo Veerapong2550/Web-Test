@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Sweet Gypsy Design เครื่องประดับทำมือเชียงใหม่ ต่างหู สร้อยคอ กำไล handmade จากศิลปินผู้เดินทาง ทุกชิ้นมีเรื่องราว">
+<title>Sweet Gypsy Design — เครื่องประดับเล่าเรื่อง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="test.css">
+
+
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Sweet <span>Gypsy</span></a>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="เปิดเมนู">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-menu">
+    <li><a href="#" data-i18n="nav_home">หน้าแรก</a></li>
+    <li><a href="#collections" data-i18n="nav_shop">สินค้า</a></li>
+    <li><a href="#story" data-i18n="nav_story">เรื่องราว</a></li>
+    <li><a href="#contact" data-i18n="nav_contact">ติดต่อ</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:.5rem">
+    <div class="lang-switcher" id="lang-switcher">
+      <button class="lang-btn" data-lang="th" onclick="setLang('th')">ไทย</button>
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">中文</button>
+      <button class="lang-btn" data-lang="ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <a href="https://line.me/ti/p/~@sweetgypsy" class="nav-cta">💚 Line OA</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-tag" data-i18n="hero_tag">Chiang Mai · Handmade Jewelry</p>
+    <h1 class="hero-title" data-i18n="hero_title">
+      เครื่องประดับ<br>
+      <em>เล่าเรื่อง…</em><br>
+      จากหัวใจหนึ่ง
+    </h1>
+    <p class="hero-sub" data-i18n="hero_sub">
+      ทุกชิ้นงานถูกสร้างขึ้นจากมือ และเต็มไปด้วยหัวใจ
+      จากศิลปินผู้เดินทาง ทั้งในโลกจริงและในจิตใจ
+    </p>
+    <div class="hero-btns">
+      <a href="#collections" class="btn-primary" data-i18n="hero_cta1">เลือกเรื่องราวของคุณ</a>
+      <a href="#story" class="btn-secondary" data-i18n="hero_cta2">เรื่องราวของเรา</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">500+</div>
+        <div class="stat-label" data-i18n="stat1">ชิ้นงานที่สร้าง</div>
+      </div>
+      <div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label" data-i18n="stat2">ทำมือทุกชิ้น</div>
+      </div>
+      <div>
+        <div class="stat-num">3</div>
+        <div class="stat-label" data-i18n="stat3">คอลเลคชัน</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="img-ph ph-1" style="height:100%">
+      <span style="writing-mode:vertical-rl;letter-spacing:.2em;text-transform:uppercase;font-size:.7rem;opacity:.4">รูปหลักของแบรนด์</span>
+    </div>
+    <div class="hero-badge">
+      <strong>Wear your story</strong>
+      "เพราะเครื่องประดับที่ดี คือสิ่งที่พูดแทนใจของผู้สวมใส่"
+    </div>
+    <div class="hero-ornament"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Handmade <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">เครื่องประดับทำมือ <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Sweet Gypsy Design <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Chiang Mai <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Wear Your Story <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">ทุกชิ้นมีเรื่องราว <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Earrings · Necklace · Bracelets <span class="marquee-dot">✦</span></span>
+    <!-- repeat -->
+    <span class="marquee-item">Handmade <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">เครื่องประดับทำมือ <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Sweet Gypsy Design <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Chiang Mai <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Wear Your Story <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">ทุกชิ้นมีเรื่องราว <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Earrings · Necklace · Bracelets <span class="marquee-dot">✦</span></span>
+  </div>
+</div>
+
+<!-- LINE CTA -->
+<div class="line-cta">
+  <p class="line-cta-text">สั่งง่าย ตอบไว ผ่าน <strong>Line OA</strong> หรือ <strong style="color:#25D366">WhatsApp</strong></p>
+  <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+    <a href="https://line.me/ti/p/~@sweetgypsy" class="line-btn">
+      <svg class="line-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.02 2 11c0 4.14 2.73 7.67 6.57 9.13.49.18.58.44.43.87l-.38 1.44c-.12.44.16.44.34.32C12.28 21 20 15.88 20 11c0-4.98-3.58-9-8-9z"/></svg>
+      Line OA
+    </a>
+    <a href="https://wa.me/66645195663" class="line-btn" style="background:#25D366;box-shadow:0 4px 14px rgba(37,211,102,.3)" target="_blank">
+      <svg class="line-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.524 3.66 1.438 5.168L2 22l4.985-1.418A9.945 9.945 0 0011.999 22C17.522 22 22 17.523 22 12S17.522 2 11.999 2zm0 18a7.946 7.946 0 01-4.291-1.253l-.308-.183-3.185.906.85-3.093-.2-.317A7.961 7.961 0 014 12c0-4.418 3.581-8 7.999-8C16.418 4 20 7.582 20 12s-3.582 8-8.001 8z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- COLLECTIONS -->
+<section class="collections" id="collections">
+  <div class="collections-header">
+    <div>
+      <p class="section-tag" data-i18n="col_tag">Collections</p>
+      <h2 class="section-title" data-i18n="col_title">เลือก<em>เรื่องราว</em><br>ที่ใช่สำหรับคุณ</h2>
+    </div>
+    <p>ทุกชิ้นงานมีชื่อ มีที่มา และมีความรู้สึกฝังอยู่<br>เราไม่ได้แค่ทำของสวย แต่ทำ 'ของที่มีหัวใจ'</p>
+  </div>
+
+  <div class="product-grid">
+    <!-- Card 1 -->
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <div class="img-ph ph-2">รูปต่างหู</div>
+        <div class="product-overlay">
+          <button class="product-overlay-btn">ดูรายละเอียด</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-cat">Earrings</p>
+        <h3 class="product-name">เสียงกระซิบจากแสงดาว</h3>
+        <p class="product-story">สำหรับคืนที่คุณต้องการความหวัง</p>
+        <p class="product-price">฿ 490 – 790</p>
+      </div>
+    </div>
+    <!-- Card 2 -->
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <div class="img-ph ph-3">รูปสร้อยคอ</div>
+        <div class="product-overlay">
+          <button class="product-overlay-btn">ดูรายละเอียด</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-cat">Necklace</p>
+        <h3 class="product-name">ดอกไม้ที่รอดในพายุ</h3>
+        <p class="product-story">สำหรับวันที่คุณลุกขึ้นมาแม้จะเคยล้ม</p>
+        <p class="product-price">฿ 690 – 1,290</p>
+      </div>
+    </div>
+    <!-- Card 3 -->
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <div class="img-ph ph-4">รูปกำไล</div>
+        <div class="product-overlay">
+          <button class="product-overlay-btn">ดูรายละเอียด</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-cat">Bracelets</p>
+        <h3 class="product-name">เถาวัลย์โอบใจ</h3>
+        <p class="product-story">สำหรับความรักที่ยังงดงาม แม้จะไม่สมบูรณ์</p>
+        <p class="product-price">฿ 390 – 690</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSPIRATION / STORY THEMES -->
+<section class="inspiration">
+  <p class="section-tag">My Inspiration</p>
+  <h2 class="section-title">ทุกชิ้นงาน<em>มีเรื่องราว</em></h2>
+  <div class="inspi-grid">
+    <div class="inspi-card">
+      <div class="inspi-num">01</div>
+      <h3 class="inspi-name">เสียงกระซิบจากแสงดาว</h3>
+      <p class="inspi-desc">แรงบันดาลใจจากคืนที่หนาวที่สุด แต่ท้องฟ้ายังเต็มไปด้วยดาว บางครั้งความหวังก็ซ่อนอยู่ในความมืด</p>
+      <a href="#collections" class="inspi-link">ดูคอลเลคชัน</a>
+    </div>
+    <div class="inspi-card">
+      <div class="inspi-num">02</div>
+      <h3 class="inspi-name">ดอกไม้ที่รอดในพายุ</h3>
+      <p class="inspi-desc">เพราะดอกไม้ที่สวยที่สุดมักงอกงามจากดินที่แห้งแล้งที่สุด เช่นเดียวกับพลังของผู้หญิงที่ไม่เคยยอมแพ้</p>
+      <a href="#collections" class="inspi-link">ดูคอลเลคชัน</a>
+    </div>
+    <div class="inspi-card">
+      <div class="inspi-num">03</div>
+      <h3 class="inspi-name">เถาวัลย์โอบใจ</h3>
+      <p class="inspi-desc">ความรักไม่จำเป็นต้องสมบูรณ์แบบเพื่อจะงดงาม บางครั้งรอยแตกนั่นแหละคือที่ที่แสงส่องเข้ามา</p>
+      <a href="#collections" class="inspi-link">ดูคอลเลคชัน</a>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <p class="section-tag" data-i18n="rev_tag">รีวิวจากลูกค้า</p>
+  <h2 class="section-title" style="text-align:center" data-i18n="rev_title">เสียงจาก<em>หัวใจ</em>ที่สวมใส่</h2>
+  <div class="review-grid">
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"ซื้อให้ตัวเองวันเกิด ชอบมากที่แต่ละชิ้นมีความหมาย ไม่เหมือนเครื่องประดับทั่วไปเลยค่ะ"</p>
+      <p class="review-author">Ploy K. <span>· เชียงใหม่</span></p>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"ซื้อเป็นของขวัญให้แฟน เขาชอบมากค่ะ บรรจุภัณฑ์สวยมาก และน้าเจ้าของใจดีตอบไวมาก"</p>
+      <p class="review-author">Mint S. <span>· กรุงเทพ</span></p>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"งานละเอียดมากค่ะ ใส่แล้วได้รับคำชมทุกครั้ง เพื่อนถามตลอดว่าซื้อที่ไหน"</p>
+      <p class="review-author">Fern T. <span>· เชียงใหม่</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story" id="story">
+  <div class="story-imgs">
+    <div style="aspect-ratio:3/4;margin-top:2.5rem;border-radius:3px;overflow:hidden"><div class="img-ph ph-5" style="height:100%">รูปศิลปิน</div></div>
+    <div style="aspect-ratio:3/4;border-radius:3px;overflow:hidden"><div class="img-ph ph-1" style="height:100%">รูปงาน</div></div>
+  </div>
+  <div class="story-content">
+    <p class="section-tag" data-i18n="story_tag">My Story</p>
+    <h2 class="section-title" data-i18n="story_title">จากปลาย<em>พู่กัน</em><br>สู่เครื่องประดับ</h2>
+    <div style="height:1.5rem"></div>
+    <p>Sweet Gypsy ก่อตั้งโดยอดีตนักเรียนศิลปะผู้หลงใหลในการสร้างสรรค์ และเชื่อว่าความฝันไม่จำเป็นต้องสมบูรณ์แบบ</p>
+    <p>จากจุดเริ่มต้นที่ไร้หลักแหล่ง สู่ร้านเล็กๆ ที่เป็นที่พักพิงของใจ ที่ Kad Klang Wiang เชียงใหม่</p>
+    <div class="story-quote">
+      "เราเชื่อในความงามของความไม่สมบูรณ์ และในพลังของเรื่องราวที่ถูกสวมใส่"
+    </div>
+    <a href="#contact" class="btn-primary">พูดคุยกับเรา</a>
+  </div>
+</section>
+
+<!-- HOW TO ORDER -->
+<section class="how">
+  <p class="section-tag" data-i18n="how_tag">วิธีสั่งซื้อ</p>
+  <h2 class="section-title" data-i18n="how_title">สั่งง่าย <em>ใน 4 ขั้นตอน</em></h2>
+  <div class="how-steps">
+    <div class="step" data-n="01">
+      <div class="step-title">เลือกสินค้า</div>
+      <p class="step-desc">เลือกชิ้นงานที่ใช่สำหรับคุณจากหน้า Collections หรือทักมาปรึกษาได้เลย</p>
+    </div>
+    <div class="step" data-n="02">
+      <div class="step-title">ทัก Line / DM</div>
+      <p class="step-desc">ติดต่อผ่าน Line OA หรือ Instagram DM แจ้งชื่อสินค้าที่ต้องการ</p>
+    </div>
+    <div class="step" data-n="03">
+      <div class="step-title">ชำระเงิน</div>
+      <p class="step-desc">โอนเงินผ่าน PromptPay หรือ QR Code ที่เราส่งให้ รับทุกธนาคาร</p>
+    </div>
+    <div class="step" data-n="04">
+      <div class="step-title">รับของ / จัดส่ง</div>
+      <p class="step-desc">รับที่ร้าน Kad Klang Wiang หรือจัดส่งทั่วไทยผ่าน Kerry / Flash</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-form-side">
+    <h2 class="contact-form-title" data-i18n="contact_title">พูดคุยกับเรา</h2>
+    <p class="contact-form-sub">อยากสั่งทำพิเศษ มีคำถาม หรือแค่ต้องการคนฟัง?<br>เราพร้อมตอบกลับทุกข้อความ ด้วยหัวใจ 🌿</p>
+    <div class="form-row">
+      <div class="form-group">
+        <label>ชื่อของคุณ</label>
+        <input type="text" placeholder="ชื่อ-นามสกุล">
+      </div>
+      <div class="form-group">
+        <label>เบอร์โทร / Line ID</label>
+        <input type="text" placeholder="08X-XXX-XXXX">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>อีเมล</label>
+      <input type="email" placeholder="your@email.com">
+    </div>
+    <div class="form-group">
+      <label>ประเภท</label>
+      <select>
+        <option value="">— เลือกประเภท —</option>
+        <option>สอบถามสินค้า</option>
+        <option>สั่งทำพิเศษ (Custom)</option>
+        <option>สั่งซื้อปกติ</option>
+        <option>อื่นๆ</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>ข้อความ</label>
+      <textarea placeholder="เล่าให้เราฟังได้เลย…"></textarea>
+    </div>
+    <button class="btn-submit" data-i18n="contact_send">ส่งข้อความ →</button>
+  </div>
+
+  <div class="contact-info-side">
+    <h3 class="contact-info-title">มาเยี่ยมเรา<br>ที่ร้านได้เลย</h3>
+
+    <div class="info-block">
+      <p class="info-label">ที่อยู่</p>
+      <p class="info-val">Kad Klang Wiang<br>71 Room 23-24, Ratchadamnoen Rd.<br>T. Phra Sing, A. Mueang<br>Chiang Mai 50200</p>
+    </div>
+
+    <div class="info-block">
+      <p class="info-label">เวลาทำการ</p>
+      <p class="info-val">จันทร์ – อาทิตย์<br>10:00 – 20:30 น.</p>
+    </div>
+
+    <div class="info-block">
+      <p class="info-label">ติดต่อ</p>
+      <p class="info-val">
+        <a href="tel:+66645195663">064-519-5663</a><br>
+        <a href="mailto:sweetgypsydesign@hotmail.com">sweetgypsydesign@hotmail.com</a>
+      </p>
+    </div>
+
+    <div class="info-block">
+      <p class="info-label">ติดตามเรา</p>
+      <div class="social-links">
+        <a href="https://www.facebook.com/sweetgypsyth" class="social-link">Facebook</a>
+        <a href="https://www.instagram.com/sweetgypsys" class="social-link">Instagram</a>
+        <a href="https://line.me/ti/p/~@sweetgypsy" class="social-link" style="color:#06C755;border-color:#06C755">Line OA</a>
+        <a href="https://wa.me/66645195663" class="social-link" style="color:#25D366;border-color:#25D366" target="_blank">WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER BAR -->
+<div class="footer-bar">
+  <span>© Sweet Gypsy Design 2026 · เครื่องประดับทำมือ เชียงใหม่</span>
+  <span>Made with 💛 by <a href="#">Wasina.me</a></span>
+</div>
+
+<!-- FLOATING BUTTONS: LINE + WHATSAPP -->
+<div class="float-group">
+  <a href="https://wa.me/66645195663" class="float-btn float-wa-btn" target="_blank" title="WhatsApp">
+    <span class="float-tooltip">WhatsApp</span>
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.524 3.66 1.438 5.168L2 22l4.985-1.418A9.945 9.945 0 0011.999 22C17.522 22 22 17.523 22 12S17.522 2 11.999 2zm0 18a7.946 7.946 0 01-4.291-1.253l-.308-.183-3.185.906.85-3.093-.2-.317A7.961 7.961 0 014 12c0-4.418 3.581-8 7.999-8C16.418 4 20 7.582 20 12s-3.582 8-8.001 8z"/></svg>
+  </a>
+  <a href="https://line.me/ti/p/~@sweetgypsy" class="float-btn float-line-btn" title="Line OA">
+    <span class="float-tooltip">Line OA</span>
+    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.02 2 11c0 4.14 2.73 7.67 6.57 9.13.49.18.58.44.43.87l-.38 1.44c-.12.44.16.44.34.32C12.28 21 20 15.88 20 11c0-4.98-3.58-9-8-9z"/></svg>
+  </a>
+</div>
+
+
+<script src="test.js"></script>
+</body>
+</html>
