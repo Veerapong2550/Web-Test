@@ -29,7 +29,7 @@ const i18n = {
     contact_title: 'พูดคุยกับเรา',
     contact_send: 'ส่งข้อความ →',
     alert_order: ' ติดต่อสั่งซื้อผ่าน Line OA หรือ Instagram DM ของเราได้เลยค่ะ\n📱 Line: @sweetgypsy\n📸 IG: @sweetgypsys',
-    alert_form: '✉️ ขอบคุณนะคะ! เราจะติดต่อกลับภายใน 24 ชั่วโมง ',
+    alert_form: 'ขอบคุณนะคะ! เราจะติดต่อกลับภายใน 24 ชั่วโมง ',
   },
   en: {
     nav_home: 'Home',
@@ -55,7 +55,7 @@ const i18n = {
     contact_title: 'Get in touch',
     contact_send: 'Send message →',
     alert_order: ' Contact us via Line OA or Instagram DM\n📱 Line: @sweetgypsy\n📸 IG: @sweetgypsys',
-    alert_form: '✉️ Thank you! We will get back to you within 24 hours ',
+    alert_form: 'Thank you! We will get back to you within 24 hours ',
   },
   zh: {
     nav_home: '首页',
@@ -81,7 +81,7 @@ const i18n = {
     contact_title: '联系我们',
     contact_send: '发送消息 →',
     alert_order: ' 请通过 Line OA 或 Instagram DM 联系我们\n📱 Line: @sweetgypsy\n📸 IG: @sweetgypsys',
-    alert_form: '✉️ 谢谢您！我们将在24小时内回复 ',
+    alert_form: '谢谢您！我们将在24小时内回复 ',
   },
   ja: {
     nav_home: 'ホーム',
@@ -107,7 +107,7 @@ const i18n = {
     contact_title: 'お問い合わせ',
     contact_send: 'メッセージを送る →',
     alert_order: ' Line OA または Instagram DM でご連絡ください\n📱 Line: @sweetgypsy\n📸 IG: @sweetgypsys',
-    alert_form: '✉️ ありがとうございます！24時間以内にご返信いたします ',
+    alert_form: 'ありがとうございます！24時間以内にご返信いたします ',
   }
 };
 
