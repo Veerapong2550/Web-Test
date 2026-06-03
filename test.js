@@ -442,7 +442,9 @@ function applyLang(lang) {
     btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
   });
 
-  // Update html lang attribute
+  // Update html language and font class
+  document.documentElement.classList.remove('lang-en', 'lang-th', 'lang-zh', 'lang-ja');
+  document.documentElement.classList.add('lang-' + lang);
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
 }
 
