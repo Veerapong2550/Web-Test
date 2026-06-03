@@ -6,7 +6,7 @@
 <meta name="description" content="Sweet Gypsy Design เครื่องประดับทำมือเชียงใหม่ ต่างหู สร้อยคอ กำไล handmade จากศิลปินผู้เดินทาง ทุกชิ้นมีเรื่องราว">
 <title>Sweet Gypsy Design — เครื่องประดับเล่าเรื่อง</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Chonburi&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;500;700&family=Prompt:wght@300;400;500&family=Shippori+Mincho:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="test.css">
 
 
@@ -354,51 +354,5 @@
 
 
 <script src="test.js"></script>
-<script>
-  const heroBadgeTexts = {
-    th: {
-      heading: 'Wear your story',
-      quote: '"เพราะเครื่องประดับที่ดี คือสิ่งที่พูดแทนใจของผู้สวมใส่"'
-    },
-    en: {
-      heading: 'Wear your story',
-      quote: '"Because good jewelry speaks for the wearer"'
-    },
-    zh: {
-      heading: 'Wear your story',
-      quote: '“因为好珠宝能够代替佩戴者表达内心”'
-    },
-    ja: {
-      heading: 'Wear your story',
-      quote: '「良いジュエリーは身に着ける人の心を伝える」'
-    }
-  };
-
-  function updateHeroBadgeText(lang) {
-    const badge = document.querySelector('.hero-badge');
-    if (!badge) return;
-    const heading = badge.querySelector('strong');
-    if (heading) {
-      heading.innerHTML = heroBadgeTexts[lang]?.heading || heroBadgeTexts.en.heading;
-    }
-
-    const quoteNode = Array.from(badge.childNodes).find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0);
-    if (quoteNode) {
-      quoteNode.textContent = '\n      ' + (heroBadgeTexts[lang]?.quote || heroBadgeTexts.en.quote) + '\n    ';
-    }
-  }
-
-  if (typeof applyLang === 'function') {
-    const originalApplyLang = applyLang;
-    window.applyLang = function (lang) {
-      originalApplyLang(lang);
-      updateHeroBadgeText(lang);
-    };
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    updateHeroBadgeText(currentLang);
-  });
-</script>
 </body>
 </html>

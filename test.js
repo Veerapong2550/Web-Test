@@ -1,5 +1,5 @@
 /* ============================================================
-   Sweet Gypsy Design — test.js
+   Sweet Gypsy Design — main.js
    Language switcher (TH / EN / ZH / JA) + UI interactions
    ============================================================ */
 
@@ -442,9 +442,7 @@ function applyLang(lang) {
     btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
   });
 
-  // Update html language and font class
-  document.documentElement.classList.remove('lang-en', 'lang-th', 'lang-zh', 'lang-ja');
-  document.documentElement.classList.add('lang-' + lang);
+  // Update html lang attribute
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
 }
 
