@@ -1,5 +1,5 @@
 /* ============================================================
-   Sweet Gypsy Design — main.js
+   Sweet Gypsy Design — test.js
    Language switcher (TH / EN / ZH / JA) + UI interactions
    ============================================================ */
 
