@@ -354,5 +354,51 @@
 
 
 <script src="test.js"></script>
+<script>
+  const heroBadgeTexts = {
+    th: {
+      heading: 'Wear your story',
+      quote: '"เพราะเครื่องประดับที่ดี คือสิ่งที่พูดแทนใจของผู้สวมใส่"'
+    },
+    en: {
+      heading: 'Wear your story',
+      quote: '"Because good jewelry speaks for the wearer"'
+    },
+    zh: {
+      heading: 'Wear your story',
+      quote: '“因为好珠宝能够代替佩戴者表达内心”'
+    },
+    ja: {
+      heading: 'Wear your story',
+      quote: '「良いジュエリーは身に着ける人の心を伝える」'
+    }
+  };
+
+  function updateHeroBadgeText(lang) {
+    const badge = document.querySelector('.hero-badge');
+    if (!badge) return;
+    const heading = badge.querySelector('strong');
+    if (heading) {
+      heading.innerHTML = heroBadgeTexts[lang]?.heading || heroBadgeTexts.en.heading;
+    }
+
+    const quoteNode = Array.from(badge.childNodes).find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0);
+    if (quoteNode) {
+      quoteNode.textContent = '\n      ' + (heroBadgeTexts[lang]?.quote || heroBadgeTexts.en.quote) + '\n    ';
+    }
+  }
+
+  if (typeof applyLang === 'function') {
+    const originalApplyLang = applyLang;
+    window.applyLang = function (lang) {
+      originalApplyLang(lang);
+      updateHeroBadgeText(lang);
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    updateHeroBadgeText(currentLang);
+  });
+</script>
 </body>
 </html>
