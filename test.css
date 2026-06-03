@@ -17,7 +17,7 @@
   --heading-font: 'Cormorant Garamond', serif;
 }
 
-html.lang-en { --body-font: 'Jost', sans-serif; --heading-font: 'Cormorant Garamond', serif; }
+html.lang-en { --body-font: 'Jost', sans-serif; --heading-font: 'Shippori Mincho', serif; }
 html.lang-th { --body-font: 'Prompt', sans-serif; --heading-font: 'Chonburi', serif; }
 html.lang-zh { --body-font: 'Noto Sans TC', sans-serif; --heading-font: 'Noto Serif TC', serif; }
 html.lang-ja { --body-font: 'Noto Sans JP', sans-serif; --heading-font: 'Shippori Mincho', serif; }
@@ -170,6 +170,8 @@ nav {
   max-width: 220px; box-shadow: 0 8px 32px rgba(0,0,0,.15);
 }
 .hero-badge strong { font-style: normal; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: .4rem; }
+.hero-badge p { margin: 0; font-size: 1rem; font-style: italic; line-height: 1.4; }
+
 
 .hero-ornament {
   position: absolute; top: 3rem; right: 3rem;
