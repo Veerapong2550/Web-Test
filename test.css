@@ -220,7 +220,7 @@ section { padding: 7rem 6rem; }
 .collections-header p { font-size: .9rem; color: var(--text-muted); max-width: 320px; line-height: 1.7; }
 
 .product-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
 }
 
 .product-card {
@@ -230,7 +230,7 @@ section { padding: 7rem 6rem; }
 .product-card:hover { transform: translateY(-6px); }
 
 .product-img-wrap {
-  aspect-ratio: 3/4; overflow: hidden; background: var(--cream-dark);
+  aspect-ratio: 4/5; overflow: hidden; background: var(--cream-dark);
   border-radius: 3px; position: relative;
 }
 .product-img-wrap img {
