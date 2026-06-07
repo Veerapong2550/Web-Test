@@ -25,7 +25,7 @@
     <li><a href="#story" data-i18n="nav_story">เรื่องราว</a></li>
     <li><a href="#contact" data-i18n="nav_contact">ติดต่อ</a></li>
   </ul>
-  <div style="display:flex;align-items:center;gap:.5rem">
+  <div class="nav-right">
     <div class="lang-switcher" id="lang-switcher">
       <button class="lang-btn" data-lang="th" onclick="setLang('th')">ไทย</button>
       <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
@@ -126,66 +126,31 @@
     <p data-i18n="col_desc">ทุกชิ้นงานมีชื่อ มีที่มา และมีความรู้สึกฝังอยู่<br>เราไม่ได้แค่ทำของสวย แต่ทำ 'ของที่มีหัวใจ'</p>
   </div>
 
-  <div class="product-grid">
-    <!-- Card 1 -->
-    <div class="product-card">
-      <div class="product-img-wrap">
-        <div class="img-ph ph-2">รูปต่างหู</div>
-        <div class="product-overlay">
-          <button class="product-overlay-btn" data-i18n="product_overlay_btn">ดูรายละเอียด</button>
-        </div>
-      </div>
-      <div class="product-info">
-        <p class="product-cat" data-i18n="product_cat_1">Earrings</p>
-        <h3 class="product-name" data-i18n="product_name_1">เสียงกระซิบจากแสงดาว</h3>
-        <p class="product-story" data-i18n="product_story_1">สำหรับคืนที่คุณต้องการความหวัง</p>
-        <p class="product-price" data-i18n="product_price_1">฿ 490 – 790</p>
-      </div>
-    </div>
-    <!-- Card 2 -->
-    <div class="product-card">
-      <div class="product-img-wrap">
-        <div class="img-ph ph-3">รูปสร้อยคอ</div>
-        <div class="product-overlay">
-          <button class="product-overlay-btn" data-i18n="product_overlay_btn">ดูรายละเอียด</button>
-        </div>
-      </div>
-      <div class="product-info">
-        <p class="product-cat" data-i18n="product_cat_2">Necklace</p>
-        <h3 class="product-name" data-i18n="product_name_2">ดอกไม้ที่รอดในพายุ</h3>
-        <p class="product-story" data-i18n="product_story_2">สำหรับวันที่คุณลุกขึ้นมาแม้จะเคยล้ม</p>
-        <p class="product-price" data-i18n="product_price_2">฿ 690 – 1,290</p>
-      </div>
-    </div>
-    <!-- Card 3 -->
-    <div class="product-card">
-      <div class="product-img-wrap">
-        <div class="img-ph ph-4">รูปกำไล</div>
-        <div class="product-overlay">
-          <button class="product-overlay-btn" data-i18n="product_overlay_btn">ดูรายละเอียด</button>
-        </div>
-      </div>
-      <div class="product-info">
-        <p class="product-cat" data-i18n="product_cat_3">Bracelets</p>
-        <h3 class="product-name" data-i18n="product_name_3">เถาวัลย์โอบใจ</h3>
-        <p class="product-story" data-i18n="product_story_3">สำหรับความรักที่ยังงดงาม แม้จะไม่สมบูรณ์</p>
-        <p class="product-price" data-i18n="product_price_3">฿ 390 – 690</p>
-      </div>
-    </div>
-    <!-- Card 4 -->
-    <div class="product-card">
-      <div class="product-img-wrap">
-        <div class="img-ph ph-3">รูปสร้อยคอมือ</div>
-        <div class="product-overlay">
-          <button class="product-overlay-btn" data-i18n="product_overlay_btn">ดูรายละเอียด</button>
-        </div>
-      </div>
-      <div class="product-info">
-        <p class="product-cat" data-i18n="product_cat_4">Handmade Necklace</p>
-        <h3 class="product-name" data-i18n="product_name_4">สายลมแห่งความทรงจำ</h3>
-        <p class="product-story" data-i18n="product_story_4">สำหรับวันที่คุณอยากกอดใครสักคนที่อยู่ไกล</p>
-        <p class="product-price" data-i18n="product_price_4">฿ 590 – 990</p>
-      </div>
+  <!-- COLLECTION TABS (Moved from Hero) -->
+  <div class="collection-tabs-ui" id="collection-tabs-ui">
+    <button class="collection-tab active" data-tab="rings">
+      <div class="tab-img"><img src="img/ring.png" alt="Rings"></div>
+      <span data-i18n="tab_rings">Rings</span>
+    </button>
+    <button class="collection-tab" data-tab="necklace">
+      <div class="tab-img"><img src="img/necklace.png" alt="Necklace"></div>
+      <span data-i18n="tab_necklace">Necklace</span>
+    </button>
+    <button class="collection-tab" data-tab="earrings">
+      <div class="tab-img"><img src="img/earrings.png" alt="Earrings"></div>
+      <span data-i18n="tab_earrings">Earrings</span>
+    </button>
+    <button class="collection-tab" data-tab="bracelets">
+      <div class="tab-img"><img src="img/bracelet.png" alt="Bracelets"></div>
+      <span data-i18n="tab_bracelets">Bracelets</span>
+    </button>
+  </div>
+
+  <div class="collections-columns" id="collections-columns">
+    <!-- Loading state -->
+    <div class="product-grid-loader" id="product-loader">
+      <div class="loader-spinner"></div>
+      <p data-i18n="catalog_loading">กำลังโหลดสินค้า...</p>
     </div>
   </div>
 </section>
@@ -367,6 +332,38 @@
   </a>
 </div>
 
+
+<!-- PRODUCT DETAIL MODAL -->
+<div class="product-modal-overlay" id="product-modal-overlay">
+  <div class="product-modal" id="product-modal">
+    <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+    <div class="modal-body">
+      <div class="modal-img-side">
+        <div class="modal-img-wrapper">
+          <img id="modal-img" src="" alt="Product" class="modal-product-img" loading="lazy">
+        </div>
+      </div>
+      <div class="modal-info-side">
+        <p class="modal-product-cat" id="modal-cat"></p>
+        <h2 class="modal-product-name" id="modal-name"></h2>
+        <p class="modal-product-story" id="modal-story"></p>
+        <div class="modal-divider"></div>
+        <p class="modal-product-price" id="modal-price"></p>
+        <p class="modal-product-desc" id="modal-desc"></p>
+        <div class="modal-actions">
+          <a href="#" id="modal-wa-btn" class="modal-order-btn modal-wa" target="_blank">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" fill="currentColor"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.524 3.66 1.438 5.168L2 22l4.985-1.418A9.945 9.945 0 0011.999 22C17.522 22 22 17.523 22 12S17.522 2 11.999 2zm0 18a7.946 7.946 0 01-4.291-1.253l-.308-.183-3.185.906.85-3.093-.2-.317A7.961 7.961 0 014 12c0-4.418 3.581-8 7.999-8C16.418 4 20 7.582 20 12s-3.582 8-8.001 8z" fill="currentColor"/></svg>
+            <span data-i18n="modal_wa_btn">สั่งซื้อผ่าน WhatsApp</span>
+          </a>
+          <a href="https://line.me/ti/p/~@sweetgypsy" id="modal-line-btn" class="modal-order-btn modal-line" target="_blank">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 2C6.48 2 2 6.02 2 11c0 4.14 2.73 7.67 6.57 9.13.49.18.58.44.43.87l-.38 1.44c-.12.44.16.44.34.32C12.28 21 20 15.88 20 11c0-4.98-3.58-9-8-9z" fill="currentColor"/></svg>
+            <span data-i18n="modal_line_btn">สั่งซื้อผ่าน Line OA</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script src="test.js"></script>
 </body>

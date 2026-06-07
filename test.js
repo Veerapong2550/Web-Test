@@ -107,6 +107,17 @@ const i18n = {
     hero_badge_subtitle: '"เพราะเครื่องประดับที่ดี คือสิ่งที่พูดแทนใจของผู้สวมใส่"',
     alert_order: ' ติดต่อสั่งซื้อผ่าน Line OA หรือ Instagram DM ของเราได้เลยค่ะ\n📱 Line: @sweetgypsy\n📸 IG: @sweetgypsys',
     alert_form: 'ขอบคุณนะคะ! เราจะติดต่อกลับภายใน 24 ชั่วโมง ',
+    catalog_loading: 'กำลังโหลดสินค้า...',
+    catalog_error: 'ไม่สามารถโหลดสินค้าได้ กรุณาลองใหม่อีกครั้ง',
+    modal_wa_btn: 'สั่งซื้อผ่าน WhatsApp',
+    modal_line_btn: 'สั่งซื้อผ่าน Line OA',
+    modal_desc_default: 'เครื่องประดับทำมือจากเชียงใหม่ ทุกชิ้นสร้างด้วยมือและหัวใจ',
+    collection_items: 'ชิ้น',
+    collection_empty: 'เร็วๆ นี้…',
+    tab_rings: 'แหวน',
+    tab_necklace: 'สร้อยคอ',
+    tab_earrings: 'ต่างหู',
+    tab_bracelets: 'กำไล',
   },
   en: {
     nav_home: 'Home',
@@ -210,6 +221,17 @@ const i18n = {
     hero_badge_subtitle: '"Because good jewelry is what speaks for the wearer\'s heart"',
     alert_order: ' Contact us via Line OA or Instagram DM\n📱 Line: @sweetgypsy\n📸 IG: @sweetgypsys',
     alert_form: 'Thank you! We will get back to you within 24 hours ',
+    catalog_loading: 'Loading products...',
+    catalog_error: 'Unable to load products. Please try again.',
+    modal_wa_btn: 'Order via WhatsApp',
+    modal_line_btn: 'Order via Line OA',
+    modal_desc_default: 'Handmade jewelry from Chiang Mai — every piece crafted by hand with heart.',
+    collection_items: 'items',
+    collection_empty: 'Coming soon…',
+    tab_rings: 'Rings',
+    tab_necklace: 'Necklace',
+    tab_earrings: 'Earrings',
+    tab_bracelets: 'Bracelets',
   },
   zh: {
     nav_home: '首页',
@@ -313,6 +335,17 @@ const i18n = {
     hero_badge_subtitle: '"因为好的珠宝就是穿戴者心声的诠释"',
     alert_order: ' 请通过 Line OA 或 Instagram DM 联系我们\n📱 Line: @sweetgypsy\n📸 IG: @sweetgypsys',
     alert_form: '谢谢您！我们将在24小时内回复 ',
+    catalog_loading: '正在加载商品...',
+    catalog_error: '无法加载商品，请重试。',
+    modal_wa_btn: '通过 WhatsApp 订购',
+    modal_line_btn: '通过 Line OA 订购',
+    modal_desc_default: '来自清迈的手工珠宝——每件作品都用双手和心灵制作。',
+    collection_items: '件',
+    collection_empty: '即将推出…',
+    tab_rings: '戒指',
+    tab_necklace: '项链',
+    tab_earrings: '耳环',
+    tab_bracelets: '手镯',
   },
   ja: {
     nav_home: 'ホーム',
@@ -416,6 +449,17 @@ const i18n = {
     hero_badge_subtitle: '"良い宝石こそが、身に纏う者の心を語っている"',
     alert_order: ' Line OAまたはInstagram DMでお問い合わせください\n📱 Line: @sweetgypsy\n📸 IG: @sweetgypsys',
     alert_form: 'ありがとうございます！24時間以内にご返信いたします ',
+    catalog_loading: '商品を読み込み中...',
+    catalog_error: '商品を読み込めませんでした。もう一度お試しください。',
+    modal_wa_btn: 'WhatsAppで注文',
+    modal_line_btn: 'Line OAで注文',
+    modal_desc_default: 'チェンマイのハンドメイドジュエリー — すべての作品は手と心で作られています。',
+    collection_items: '点',
+    collection_empty: '近日公開…',
+    tab_rings: 'リング',
+    tab_necklace: 'ネックレス',
+    tab_earrings: 'ピアス',
+    tab_bracelets: 'ブレスレット',
   }
 };
 
@@ -468,6 +512,14 @@ function applyLang(lang) {
 
   // Update html lang attribute
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
+
+  // Update html class for font switching
+  document.documentElement.className = `lang-${lang}`;
+
+  // Re-render dynamic catalog in new language (if loaded)
+  if (typeof renderCatalog === 'function' && cachedSheetRows) {
+    renderCatalog();
+  }
 }
 
 /* ─── PUBLIC: called by onclick in HTML ─── */
@@ -486,10 +538,22 @@ function initNavScroll() {
   });
 }
 
-/* ─── PRODUCT CARD BUTTONS ─── */
+/* ─── PRODUCT CARD BUTTONS (static fallback cards) ─── */
 function initProductCards() {
   document.querySelectorAll('.product-overlay-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      // If this card has sheet data attached, open modal instead
+      const card = e.target.closest('.product-card');
+      if (card && card.dataset.sheetProduct) {
+        try {
+          const product = JSON.parse(card.dataset.sheetProduct);
+          openProductModal(product);
+        } catch(err) {
+          console.error('[CARD] Failed to parse product data', err);
+        }
+        return;
+      }
+      // Fallback: show alert for static cards
       const t = i18n[currentLang];
       alert(t ? t.alert_order : i18n.en.alert_order);
     });
@@ -526,11 +590,365 @@ function initHamburger() {
   });
 }
 
+/* ============================================================
+   GOOGLE SHEETS CATALOG INTEGRATION
+   (ported from Web-test02/files/js/main.js)
+   ============================================================ */
+
+const SHEET_ID = '1Al60xA21jSCWvyqvgQeSxVhyPeU71ADsYLzZPbLQpys';
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+
+// Cached sheet data for re-rendering on language change
+let cachedSheetRows = null;
+let cachedImgColIndex = 6;
+
+/* ─── IMAGE UTILITIES ─── */
+function optimizeImageURL(imageUrl, productId) {
+  if (!imageUrl || typeof imageUrl !== 'string') return '';
+  // Cloudinary auto-format: serve best format (WebP/AVIF) & quality
+  if (imageUrl.includes('cloudinary.com') && !imageUrl.includes('f_auto')) {
+    imageUrl = imageUrl.replace('/upload/', '/upload/f_auto,q_auto/');
+  }
+  if (imageUrl.startsWith('data:') || imageUrl.startsWith('http')) return imageUrl;
+  return imageUrl;
+}
+
+function setupImageError(imgElement, productId) {
+  imgElement.addEventListener('error', function() {
+    console.warn(`[IMG] Failed to load: ${productId}`);
+    this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5JbWFnZSBOb3QgRm91bmQ8L3RleHQ+PC9zdmc+';
+    this.classList.add('image-error');
+  });
+}
+
+/* ─── DETECT IMAGE COLUMN ─── */
+function detectImageColumn(rows) {
+  if (!rows || rows.length === 0) return 6;
+  const firstRow = rows[0].c;
+  for (let i = 0; i < firstRow.length; i++) {
+    const val = firstRow[i]?.v || '';
+    if (typeof val === 'string' && (val.includes('http') || val.includes('data:image'))) {
+      return i;
+    }
+  }
+  return 6;
+}
+
+/* ============================================================
+   CATEGORY DEFINITIONS — 4 product types
+   ============================================================ */
+
+const CATEGORIES = [
+  {
+    id: 'rings',
+    keywords: ['ring', 'แหวน'],
+    names: { en: 'Rings', th: 'แหวน', zh: '戒指', ja: 'リング' },
+    ph: 'ph-2'
+  },
+  {
+    id: 'necklace',
+    keywords: ['necklace', 'neckles', 'สร้อยคอ', 'pendant'],
+    names: { en: 'Necklace', th: 'สร้อยคอ', zh: '项链', ja: 'ネックレス' },
+    ph: 'ph-3'
+  },
+  {
+    id: 'earrings',
+    keywords: ['earring', 'ต่างหู', 'ear ', 'stud'],
+    names: { en: 'Earrings', th: 'ต่างหู', zh: '耳环', ja: 'ピアス' },
+    ph: 'ph-4'
+  },
+  {
+    id: 'bracelets',
+    keywords: ['bracelet', 'กำไล', 'bangle'],
+    names: { en: 'Bracelets', th: 'กำไล', zh: '手镯', ja: 'ブレスレット' },
+    ph: 'ph-5'
+  }
+];
+
+/* ─── AUTO-CATEGORIZE A PRODUCT BY NAME ─── */
+function categorizeProduct(name) {
+  const lower = (name || '').toLowerCase();
+  for (const cat of CATEGORIES) {
+    if (cat.keywords.some(kw => lower.includes(kw.toLowerCase()))) {
+      return cat.id;
+    }
+  }
+  return null; // uncategorized
+}
+
+/* ─── GET CATEGORY DISPLAY NAME ─── */
+function getCategoryName(cat) {
+  return cat.names[currentLang] || cat.names.en;
+}
+
+/* ─── BUILD A SINGLE PRODUCT CARD HTML ─── */
+function buildProductCard(product) {
+  const t = i18n[currentLang] || i18n.en;
+  const viewBtnText = t.product_overlay_btn || 'View Details';
+  const safeData = JSON.stringify(product).replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+
+  const imgHTML = product.image
+    ? `<img src="${product.image}" alt="${product.name}" class="product-img-dynamic" loading="lazy" data-product-id="${product.id}">`
+    : `<div class="img-ph ${product.ph || 'ph-2'}">${product.name}</div>`;
+
+  return `
+    <div class="product-card" data-sheet-product="${safeData}">
+      <div class="product-img-wrap">
+        ${imgHTML}
+        <div class="product-overlay">
+          <button class="product-overlay-btn">${viewBtnText}</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-cat">${product.category || ''}</p>
+        <h3 class="product-name">${product.name}</h3>
+        <p class="product-price">${product.price} THB</p>
+      </div>
+    </div>
+  `;
+}
+
+/* ─── PARSE ROW INTO PRODUCT OBJECT ─── */
+function parseProductRow(row, index, imgColIndex) {
+  // Actual sheet structure: Col0=ID, Col1=NAME, Col2=PRICE, Col3=ImageURL, Col4=Description
+  const id = row.c[0]?.v?.toString() || `product-${index}`;
+  const name = row.c[1]?.v || '';
+  const price = row.c[2]?.v || 'N/A';
+  const image = optimizeImageURL(row.c[3]?.v, id);
+  const desc = row.c[4]?.v || '';
+
+  // Auto-detect category from name
+  const catId = categorizeProduct(name);
+  const catObj = CATEGORIES.find(c => c.id === catId);
+  const category = catObj ? getCategoryName(catObj) : '';
+
+  return {
+    id, name, price, desc, image, category,
+    catId: catId || 'other',
+    ph: catObj ? catObj.ph : 'ph-2',
+    story: ''
+  };
+}
+
+/* ─── BUILD A CATEGORY COLUMN ─── */
+function buildCategoryColumn(cat, products) {
+  const t = i18n[currentLang] || i18n.en;
+  const catName = getCategoryName(cat);
+  const itemWord = t.collection_items || 'items';
+
+  let cardsHTML = '';
+  if (products.length > 0) {
+    cardsHTML = products.map(p => buildProductCard(p)).join('');
+  } else {
+    cardsHTML = `<div class="collection-empty">${t.collection_empty || 'Coming soon…'}</div>`;
+  }
+
+  return `
+    <div class="collection-column" data-category="${cat.id}">
+      <div class="collection-column-header">
+        <span class="col-type-sub">COLLECTION</span>
+        <h3>${catName}</h3>
+        <span class="col-count">${products.length} ${itemWord}</span>
+      </div>
+      <div class="collection-column-items">
+        ${cardsHTML}
+      </div>
+    </div>
+  `;
+}
+
+/* ─── RENDER CATALOG: GROUP BY CATEGORY INTO 4 COLUMNS ─── */
+function renderCatalog() {
+  if (!cachedSheetRows) return;
+
+  const container = document.getElementById('collections-columns');
+  if (!container) return;
+
+  // Parse all products
+  const allProducts = [];
+  cachedSheetRows.forEach((row, index) => {
+    try {
+      allProducts.push(parseProductRow(row, index, cachedImgColIndex));
+    } catch(e) {
+      console.error(`[CATALOG] Row ${index} failed:`, e);
+    }
+  });
+
+  // Group products by category
+  const grouped = {};
+  CATEGORIES.forEach(cat => { grouped[cat.id] = []; });
+  grouped['other'] = [];
+
+  allProducts.forEach(product => {
+    if (grouped[product.catId]) {
+      grouped[product.catId].push(product);
+    } else {
+      grouped['other'].push(product);
+    }
+  });
+
+  // Distribute uncategorized items round-robin into the 4 columns
+  if (grouped['other'].length > 0) {
+    grouped['other'].forEach((product, i) => {
+      const targetCat = CATEGORIES[i % CATEGORIES.length];
+      product.category = getCategoryName(targetCat);
+      product.catId = targetCat.id;
+      grouped[targetCat.id].push(product);
+    });
+  }
+
+  // Build 4 category columns
+  let columnsHTML = '';
+  CATEGORIES.forEach((cat, idx) => {
+    // We add the 'active' class to the first column initially so something shows
+    const isActive = idx === 0 ? ' active' : '';
+    const columnStr = buildCategoryColumn(cat, grouped[cat.id]);
+    // Inject the active class into the wrapper div
+    columnsHTML += columnStr.replace('class="collection-column"', `class="collection-column${isActive}"`);
+  });
+
+  container.innerHTML = columnsHTML;
+
+  // Setup image error handlers
+  container.querySelectorAll('.product-img-dynamic').forEach(img => {
+    setupImageError(img, img.dataset.productId);
+  });
+
+  // Re-attach click handlers
+  initProductCards();
+
+  console.log(`[CATALOG] ✓ Rendered ${allProducts.length} products in 4 categories`);
+}
+
+/* ─── FETCH CATALOG FROM GOOGLE SHEETS ─── */
+async function fetchCatalog() {
+  const container = document.getElementById('collections-columns');
+  const t = i18n[currentLang] || i18n.en;
+
+  try {
+    console.log('[CATALOG] Fetching from Google Sheets...');
+    const response = await fetch(SHEET_URL);
+    const text = await response.text();
+    const jsonData = JSON.parse(text.substring(47, text.length - 2));
+    const rows = jsonData.table.rows;
+
+    console.log(`[CATALOG] ✓ Loaded ${rows.length} products`);
+
+    // Cache for language switching
+    cachedSheetRows = rows;
+    cachedImgColIndex = detectImageColumn(rows);
+
+    // Render the catalog
+    renderCatalog();
+
+  } catch (error) {
+    console.error('[CATALOG] Error fetching:', error);
+    if (container) {
+      container.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:2rem 0;">${t.catalog_error || 'Unable to load products.'}</p>`;
+    }
+  }
+}
+
+/* ============================================================
+   PRODUCT DETAIL MODAL
+   ============================================================ */
+
+function openProductModal(product) {
+  const overlay = document.getElementById('product-modal-overlay');
+  if (!overlay) return;
+
+  const t = i18n[currentLang] || i18n.en;
+
+  // Populate modal
+  document.getElementById('modal-cat').textContent = product.category || '';
+  document.getElementById('modal-name').textContent = product.name || '';
+  document.getElementById('modal-story').textContent = product.story || '';
+  document.getElementById('modal-price').textContent = product.price ? `${product.price} THB` : '';
+  document.getElementById('modal-desc').textContent = product.desc || t.modal_desc_default || '';
+
+  // Image
+  const modalImg = document.getElementById('modal-img');
+  if (product.image) {
+    modalImg.src = product.image;
+    modalImg.alt = product.name;
+    setupImageError(modalImg, product.id);
+  } else {
+    modalImg.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5ObyBJbWFnZTwvdGV4dD48L3N2Zz4=';
+  }
+
+  // WhatsApp link
+  const waMsg = currentLang === 'th'
+    ? `สวัสดีค่ะ สนใจสั่งซื้อสินค้า: ${product.name} (รหัส: ${product.id})`
+    : `Hello, I'm interested in ordering: ${product.name} (ID: ${product.id})`;
+  document.getElementById('modal-wa-btn').href = `https://wa.me/66645195663?text=${encodeURIComponent(waMsg)}`;
+
+  // Show modal
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProductModal() {
+  const overlay = document.getElementById('product-modal-overlay');
+  if (!overlay) return;
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function initModal() {
+  const overlay = document.getElementById('product-modal-overlay');
+  const closeBtn = document.getElementById('modal-close');
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeProductModal);
+  }
+  if (overlay) {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeProductModal();
+    });
+  }
+  // ESC key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeProductModal();
+  });
+}
+
+/* ─── COLLECTION TAB SWITCHING ─── */
+function initCollectionTabs() {
+  const tabs = document.querySelectorAll('.collection-tab[data-tab]');
+  
+  tabs.forEach(tab => {
+    tab.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      // Update active tab styling
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      
+      const catId = tab.getAttribute('data-tab');
+      
+      // Update active column visibility
+      const columns = document.querySelectorAll('.collection-column');
+      columns.forEach(col => {
+        if (col.getAttribute('data-category') === catId) {
+          col.classList.add('active');
+        } else {
+          col.classList.remove('active');
+        }
+      });
+    });
+  });
+}
+
 /* ─── INIT ON DOM READY ─── */
 document.addEventListener('DOMContentLoaded', () => {
   initNavScroll();
   initProductCards();
   initContactForm();
   initHamburger();
+  initModal();
+  initCollectionTabs();
   applyLang('en'); // default language
+
+  // Fetch real product data from Google Sheets
+  fetchCatalog();
 });
