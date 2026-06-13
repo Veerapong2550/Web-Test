@@ -102,7 +102,7 @@ const i18n = {
     line_btn_text: 'Line OA',
     wa_btn_text: 'WhatsApp',
     footer_text: '© Sweet Gypsy Design 2026 · เครื่องประดับทำมือ เชียงใหม่',
-    footer_credit: 'Made with 💛 by <a href="#">Wasina.me</a>',
+    footer_credit: 'Made by <a href="#">4on</a>',
     hero_badge_title: 'Wear your story',
     hero_badge_subtitle: '"เพราะเครื่องประดับที่ดี คือสิ่งที่พูดแทนใจของผู้สวมใส่"',
     alert_order: ' ติดต่อสั่งซื้อผ่าน Line OA หรือ Instagram DM ของเราได้เลยค่ะ\n📱 Line: @sweetgypsy\n📸 IG: @sweetgypsys',
@@ -216,7 +216,7 @@ const i18n = {
     line_btn_text: 'Line OA',
     wa_btn_text: 'WhatsApp',
     footer_text: '© Sweet Gypsy Design 2026 · Handmade Jewelry from Chiang Mai',
-    footer_credit: 'Made with 💛 by <a href="#">Wasina.me</a>',
+    footer_credit: 'Made by <a href="#">4on</a>',
     hero_badge_title: 'Wear your story',
     hero_badge_subtitle: '"Because good jewelry is what speaks for the wearer\'s heart"',
     alert_order: ' Contact us via Line OA or Instagram DM\n📱 Line: @sweetgypsy\n📸 IG: @sweetgypsys',
@@ -330,7 +330,7 @@ const i18n = {
     line_btn_text: 'Line OA',
     wa_btn_text: 'WhatsApp',
     footer_text: '© Sweet Gypsy Design 2026 · 清迈手工珠宝',
-    footer_credit: 'Made with 💛 by <a href="#">Wasina.me</a>',
+    footer_credit: 'Made by <a href="#">4on</a>',
     hero_badge_title: '穿上你的故事',
     hero_badge_subtitle: '"因为好的珠宝就是穿戴者心声的诠释"',
     alert_order: ' 请通过 Line OA 或 Instagram DM 联系我们\n📱 Line: @sweetgypsy\n📸 IG: @sweetgypsys',
@@ -444,7 +444,7 @@ const i18n = {
     line_btn_text: 'Line OA',
     wa_btn_text: 'WhatsApp',
     footer_text: '© Sweet Gypsy Design 2026 · チェンマイ ハンドメイドジュエリー',
-    footer_credit: 'Made with 💛 by <a href="#">Wasina.me</a>',
+    footer_credit: 'Made by <a href="#">4on</a>',
     hero_badge_title: 'あなたの物語を纏う',
     hero_badge_subtitle: '"良い宝石こそが、身に纏う者の心を語っている"',
     alert_order: ' Line OAまたはInstagram DMでお問い合わせください\n📱 Line: @sweetgypsy\n📸 IG: @sweetgypsys',
@@ -606,7 +606,10 @@ function initContactForm() {
       statusMsg.style.backgroundColor = '#f8d7da';
       statusMsg.style.color = '#721c24';
       const t = i18n[currentLang];
-      statusMsg.textContent = t ? (t.form_limit_error || 'You have reached the daily limit for sending messages. Please try again tomorrow.') : 'You have reached the daily limit for sending messages. Please try again tomorrow.';
+      const limitMsg = currentLang === 'th'
+        ? 'คุณได้ส่งข้อความสูงสุดแล้ว (3 ข้อความ/24 ชั่วโมง) กรุณาลองใหม่พรุ่งนี้'
+        : 'You have reached the daily limit (3 messages per 24 hours). Please try again tomorrow.';
+      statusMsg.textContent = limitMsg;
       return;
     }
 
@@ -635,7 +638,11 @@ function initContactForm() {
           statusMsg.style.display = 'block';
           statusMsg.style.backgroundColor = '#d4edda';
           statusMsg.style.color = '#155724';
-          statusMsg.textContent = 'ส่งข้อมูลสำเร็จแล้ว! สังเกตกล่องข้อความอีเมลของคุณเพื่อกดยืนยัน (Activate) ครั้งแรกด้วยนะคะ';
+          const t = i18n[currentLang];
+          const successMsg = currentLang === 'th'
+            ? 'ส่งข้อมูลสำเร็จแล้ว! สังเกตกล่องข้อความอีเมลของคุณเพื่อกดยืนยัน (Activate) ครั้งแรกด้วยนะคะ'
+            : 'Message sent! Please check your email to confirm (Activate) the form.';
+          statusMsg.textContent = successMsg;
           form.reset();
           recordSubmission();
         } else if (data.message && data.message.toLowerCase().includes('activation')) {
@@ -653,7 +660,11 @@ function initContactForm() {
         statusMsg.style.display = 'block';
         statusMsg.style.backgroundColor = '#f8d7da';
         statusMsg.style.color = '#721c24';
-        statusMsg.textContent = 'เกิดข้อผิดพลาด: มีปัญหาบนหน้าเว็บ ไม่สามารถส่งข้อมูลได้ กรุณาเช็กชื่อคอลัมน์และอินเทอร์เน็ต';
+        const t = i18n[currentLang];
+        const errorMsg = currentLang === 'th'
+          ? 'เกิดข้อผิดพลาด: มีปัญหาบนหน้าเว็บ ไม่สามารถส่งข้อมูลได้ กรุณาเช็กชื่อคอลัมน์และอินเทอร์เน็ต'
+          : 'Error: Unable to send message. Please check your connection and try again.';
+        statusMsg.textContent = errorMsg;
       })
       .finally(() => {
         submitBtn.disabled = false;
@@ -788,13 +799,13 @@ function buildProductCard(product) {
       <div class="product-img-wrap">
         ${imgHTML}
         <div class="product-overlay">
-          <button class="product-overlay-btn">${viewBtnText}</button>
+          <button type="button" class="product-overlay-btn">${viewBtnText}</button>
         </div>
       </div>
       <div class="product-info">
         <p class="product-cat">${product.category || ''}</p>
         <h3 class="product-name">${product.name}</h3>
-        <p class="product-price">${product.price} THB</p>
+        <p class="product-price">${product.price}</p>
       </div>
     </div>
   `;
