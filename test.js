@@ -102,7 +102,7 @@ const i18n = {
     line_btn_text: 'Line OA',
     wa_btn_text: 'WhatsApp',
     footer_text: '© Sweet Gypsy Design 2026 · เครื่องประดับทำมือ เชียงใหม่',
-    footer_credit: 'Made by <a href="#">4on</a>',
+    footer_credit: 'Made with 💛 by <a href="#">Wasina.me</a>',
     hero_badge_title: 'Wear your story',
     hero_badge_subtitle: '"เพราะเครื่องประดับที่ดี คือสิ่งที่พูดแทนใจของผู้สวมใส่"',
     alert_order: ' ติดต่อสั่งซื้อผ่าน Line OA หรือ Instagram DM ของเราได้เลยค่ะ\n📱 Line: @sweetgypsy\n📸 IG: @sweetgypsys',
@@ -216,7 +216,7 @@ const i18n = {
     line_btn_text: 'Line OA',
     wa_btn_text: 'WhatsApp',
     footer_text: '© Sweet Gypsy Design 2026 · Handmade Jewelry from Chiang Mai',
-    footer_credit: 'Made by <a href="#">4on</a>',
+    footer_credit: 'Made with 💛 by <a href="#">Wasina.me</a>',
     hero_badge_title: 'Wear your story',
     hero_badge_subtitle: '"Because good jewelry is what speaks for the wearer\'s heart"',
     alert_order: ' Contact us via Line OA or Instagram DM\n📱 Line: @sweetgypsy\n📸 IG: @sweetgypsys',
@@ -330,7 +330,7 @@ const i18n = {
     line_btn_text: 'Line OA',
     wa_btn_text: 'WhatsApp',
     footer_text: '© Sweet Gypsy Design 2026 · 清迈手工珠宝',
-    footer_credit: 'Made by <a href="#">4on</a>',
+    footer_credit: 'Made with 💛 by <a href="#">Wasina.me</a>',
     hero_badge_title: '穿上你的故事',
     hero_badge_subtitle: '"因为好的珠宝就是穿戴者心声的诠释"',
     alert_order: ' 请通过 Line OA 或 Instagram DM 联系我们\n📱 Line: @sweetgypsy\n📸 IG: @sweetgypsys',
@@ -444,7 +444,7 @@ const i18n = {
     line_btn_text: 'Line OA',
     wa_btn_text: 'WhatsApp',
     footer_text: '© Sweet Gypsy Design 2026 · チェンマイ ハンドメイドジュエリー',
-    footer_credit: 'Made by <a href="#">4on</a>',
+    footer_credit: 'Made with 💛 by <a href="#">Wasina.me</a>',
     hero_badge_title: 'あなたの物語を纏う',
     hero_badge_subtitle: '"良い宝石こそが、身に纏う者の心を語っている"',
     alert_order: ' Line OAまたはInstagram DMでお問い合わせください\n📱 Line: @sweetgypsy\n📸 IG: @sweetgypsys',
@@ -606,10 +606,7 @@ function initContactForm() {
       statusMsg.style.backgroundColor = '#f8d7da';
       statusMsg.style.color = '#721c24';
       const t = i18n[currentLang];
-      const limitMsg = currentLang === 'th'
-        ? 'คุณได้ส่งข้อความสูงสุดแล้ว (3 ข้อความ/24 ชั่วโมง) กรุณาลองใหม่พรุ่งนี้'
-        : 'You have reached the daily limit (3 messages per 24 hours). Please try again tomorrow.';
-      statusMsg.textContent = limitMsg;
+      statusMsg.textContent = t ? (t.form_limit_error || 'You have reached the daily limit for sending messages. Please try again tomorrow.') : 'You have reached the daily limit for sending messages. Please try again tomorrow.';
       return;
     }
 
@@ -638,11 +635,7 @@ function initContactForm() {
           statusMsg.style.display = 'block';
           statusMsg.style.backgroundColor = '#d4edda';
           statusMsg.style.color = '#155724';
-          const t = i18n[currentLang];
-          const successMsg = currentLang === 'th'
-            ? 'ส่งข้อมูลสำเร็จแล้ว! สังเกตกล่องข้อความอีเมลของคุณเพื่อกดยืนยัน (Activate) ครั้งแรกด้วยนะคะ'
-            : 'Message sent! Please check your email to confirm (Activate) the form.';
-          statusMsg.textContent = successMsg;
+          statusMsg.textContent = 'ส่งข้อมูลสำเร็จแล้ว! สังเกตกล่องข้อความอีเมลของคุณเพื่อกดยืนยัน (Activate) ครั้งแรกด้วยนะคะ';
           form.reset();
           recordSubmission();
         } else if (data.message && data.message.toLowerCase().includes('activation')) {
@@ -660,11 +653,7 @@ function initContactForm() {
         statusMsg.style.display = 'block';
         statusMsg.style.backgroundColor = '#f8d7da';
         statusMsg.style.color = '#721c24';
-        const t = i18n[currentLang];
-        const errorMsg = currentLang === 'th'
-          ? 'เกิดข้อผิดพลาด: มีปัญหาบนหน้าเว็บ ไม่สามารถส่งข้อมูลได้ กรุณาเช็กชื่อคอลัมน์และอินเทอร์เน็ต'
-          : 'Error: Unable to send message. Please check your connection and try again.';
-        statusMsg.textContent = errorMsg;
+        statusMsg.textContent = 'เกิดข้อผิดพลาด: มีปัญหาบนหน้าเว็บ ไม่สามารถส่งข้อมูลได้ กรุณาเช็กชื่อคอลัมน์และอินเทอร์เน็ต';
       })
       .finally(() => {
         submitBtn.disabled = false;
@@ -739,6 +728,7 @@ function detectImageColumn(rows) {
 
 /* ============================================================
    CATEGORY DEFINITIONS — 4 product types
+   Now driven by the "Catalog_Type" column (Col F) in Google Sheets
    ============================================================ */
 
 const CATEGORIES = [
@@ -750,33 +740,49 @@ const CATEGORIES = [
   },
   {
     id: 'necklace',
-    keywords: ['necklace', 'neckles', 'สร้อยคอ', 'pendant'],
     names: { en: 'Necklace', th: 'สร้อยคอ', zh: '项链', ja: 'ネックレス' },
     ph: 'ph-3'
   },
   {
     id: 'earrings',
-    keywords: ['earring', 'ต่างหู', 'ear ', 'stud'],
     names: { en: 'Earrings', th: 'ต่างหู', zh: '耳环', ja: 'ピアス' },
     ph: 'ph-4'
   },
   {
     id: 'bracelets',
-    keywords: ['bracelet', 'กำไล', 'bangle'],
     names: { en: 'Bracelets', th: 'กำไล', zh: '手镯', ja: 'ブレスレット' },
     ph: 'ph-5'
   }
 ];
 
-/* ─── AUTO-CATEGORIZE A PRODUCT BY NAME ─── */
-function categorizeProduct(name) {
-  const lower = (name || '').toLowerCase();
-  for (const cat of CATEGORIES) {
-    if (cat.keywords.some(kw => lower.includes(kw.toLowerCase()))) {
-      return cat.id;
-    }
-  }
-  return null; // uncategorized
+/* ─── DM LINK GENERATORS — based on DM_Type column (Col G) ─── */
+const DM_LINKS = {
+  line: (product) => `https://line.me/ti/p/~@sweetgypsy`,
+  whatsapp: (product) => {
+    const msg = currentLang === 'th'
+      ? `สวัสดีค่ะ สนใจสินค้า: ${product.name} (รหัส: ${product.id})`
+      : `Hello, I'm interested in: ${product.name} (ID: ${product.id})`;
+    return `https://wa.me/66645195663?text=${encodeURIComponent(msg)}`;
+  },
+  instagram: (product) => `https://ig.me/m/sweetgypsys`,
+  facebook: (product) => `https://m.me/sweetgypsyth`
+};
+
+/** Returns the primary DM link URL for a product based on its DM_Type */
+function getDmLink(product) {
+  const type = (product.dmType || 'whatsapp').toLowerCase().trim();
+  const generator = DM_LINKS[type] || DM_LINKS.whatsapp;
+  return generator(product);
+}
+
+/* ─── NORMALIZE Catalog_Type VALUE FROM SHEET ─── */
+function normalizeCatalogType(raw) {
+  if (!raw) return null;
+  // Strip zero-width spaces and trim
+  const cleaned = raw.replace(/[\u200B-\u200D\uFEFF]/g, '').trim().toLowerCase();
+  // Match against known category IDs
+  const match = CATEGORIES.find(cat => cat.id === cleaned);
+  return match ? match.id : null;
 }
 
 /* ─── GET CATEGORY DISPLAY NAME ─── */
@@ -799,13 +805,13 @@ function buildProductCard(product) {
       <div class="product-img-wrap">
         ${imgHTML}
         <div class="product-overlay">
-          <button type="button" class="product-overlay-btn">${viewBtnText}</button>
+          <button class="product-overlay-btn">${viewBtnText}</button>
         </div>
       </div>
       <div class="product-info">
         <p class="product-cat">${product.category || ''}</p>
         <h3 class="product-name">${product.name}</h3>
-        <p class="product-price">${product.price}</p>
+        <p class="product-price">${product.price} THB</p>
       </div>
     </div>
   `;
@@ -813,15 +819,18 @@ function buildProductCard(product) {
 
 /* ─── PARSE ROW INTO PRODUCT OBJECT ─── */
 function parseProductRow(row, index, imgColIndex) {
-  // Actual sheet structure: Col0=ID, Col1=NAME, Col2=PRICE, Col3=ImageURL, Col4=Description
+  // Sheet structure: Col0=ID, Col1=NAME, Col2=PRICE, Col3=ImageURL,
+  //                 Col4=Description, Col5=Catalog_Type, Col6=DM_Type
   const id = row.c[0]?.v?.toString() || `product-${index}`;
   const name = row.c[1]?.v || '';
   const price = row.c[2]?.v || 'N/A';
   const image = optimizeImageURL(row.c[3]?.v, id);
   const desc = row.c[4]?.v || '';
+  const dmType = row.c[6]?.v || 'whatsapp';
 
-  // Auto-detect category from name
-  const catId = categorizeProduct(name);
+  // Use Catalog_Type column (Col F / index 5) from the sheet
+  const rawCatalogType = row.c[5]?.v || '';
+  const catId = normalizeCatalogType(rawCatalogType);
   const catObj = CATEGORIES.find(c => c.id === catId);
   const category = catObj ? getCategoryName(catObj) : '';
 
@@ -829,6 +838,7 @@ function parseProductRow(row, index, imgColIndex) {
     id, name, price, desc, image, category,
     catId: catId || 'other',
     ph: catObj ? catObj.ph : 'ph-2',
+    dmType: dmType,
     story: ''
   };
 }
@@ -860,14 +870,14 @@ function buildCategoryColumn(cat, products) {
   `;
 }
 
-/* ─── RENDER CATALOG: GROUP BY CATEGORY INTO 4 COLUMNS ─── */
+/* ─── RENDER CATALOG: FILTER BY Catalog_Type INTO 4 COLUMNS ─── */
 function renderCatalog() {
   if (!cachedSheetRows) return;
 
   const container = document.getElementById('collections-columns');
   if (!container) return;
 
-  // Parse all products
+  // Parse all products from sheet rows
   const allProducts = [];
   cachedSheetRows.forEach((row, index) => {
     try {
@@ -877,22 +887,17 @@ function renderCatalog() {
     }
   });
 
-  // Group products by category
+  // ── USE .filter() TO SEPARATE PRODUCTS BY Catalog_Type ──
   const grouped = {};
-  CATEGORIES.forEach(cat => { grouped[cat.id] = []; });
-  grouped['other'] = [];
-
-  allProducts.forEach(product => {
-    if (grouped[product.catId]) {
-      grouped[product.catId].push(product);
-    } else {
-      grouped['other'].push(product);
-    }
+  CATEGORIES.forEach(cat => {
+    grouped[cat.id] = allProducts.filter(p => p.catId === cat.id);
   });
 
-  // Distribute uncategorized items round-robin into the 4 columns
-  if (grouped['other'].length > 0) {
-    grouped['other'].forEach((product, i) => {
+  // Collect uncategorized products (Catalog_Type didn't match any known category)
+  const uncategorized = allProducts.filter(p => p.catId === 'other');
+  if (uncategorized.length > 0) {
+    console.warn(`[CATALOG] ${uncategorized.length} product(s) have no matching Catalog_Type — distributing round-robin`);
+    uncategorized.forEach((product, i) => {
       const targetCat = CATEGORIES[i % CATEGORIES.length];
       product.category = getCategoryName(targetCat);
       product.catId = targetCat.id;
@@ -903,10 +908,8 @@ function renderCatalog() {
   // Build 4 category columns
   let columnsHTML = '';
   CATEGORIES.forEach((cat, idx) => {
-    // We add the 'active' class to the first column initially so something shows
     const isActive = idx === 0 ? ' active' : '';
     const columnStr = buildCategoryColumn(cat, grouped[cat.id]);
-    // Inject the active class into the wrapper div
     columnsHTML += columnStr.replace('class="collection-column"', `class="collection-column${isActive}"`);
   });
 
@@ -920,7 +923,9 @@ function renderCatalog() {
   // Re-attach click handlers
   initProductCards();
 
-  console.log(`[CATALOG] ✓ Rendered ${allProducts.length} products in 4 categories`);
+  // Log summary per category
+  const summary = CATEGORIES.map(c => `${c.id}: ${grouped[c.id].length}`).join(', ');
+  console.log(`[CATALOG] ✓ Rendered ${allProducts.length} products → ${summary}`);
 }
 
 /* ─── FETCH CATALOG FROM GOOGLE SHEETS ─── */
@@ -979,11 +984,25 @@ function openProductModal(product) {
     modalImg.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5ObyBJbWFnZTwvdGV4dD48L3N2Zz4=';
   }
 
-  // WhatsApp link
+  // ── Dynamic DM link based on DM_Type column from Google Sheet ──
+  const dmLink = getDmLink(product);
+  const dmType = (product.dmType || 'whatsapp').toLowerCase().trim();
+
+  // WhatsApp button — always uses WhatsApp link
   const waMsg = currentLang === 'th'
     ? `สวัสดีค่ะ สนใจสั่งซื้อสินค้า: ${product.name} (รหัส: ${product.id})`
     : `Hello, I'm interested in ordering: ${product.name} (ID: ${product.id})`;
   document.getElementById('modal-wa-btn').href = `https://wa.me/66645195663?text=${encodeURIComponent(waMsg)}`;
+
+  // Line button — uses the DM_Type link if it's line/ig/fb, otherwise default Line
+  const lineBtn = document.getElementById('modal-line-btn');
+  if (dmType === 'instagram') {
+    lineBtn.href = DM_LINKS.instagram(product);
+  } else if (dmType === 'facebook') {
+    lineBtn.href = DM_LINKS.facebook(product);
+  } else {
+    lineBtn.href = DM_LINKS.line(product);
+  }
 
   // Show modal
   overlay.classList.add('active');
