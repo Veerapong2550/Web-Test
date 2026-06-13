@@ -548,7 +548,7 @@ function initProductCards() {
         try {
           const product = JSON.parse(card.dataset.sheetProduct);
           openProductModal(product);
-        } catch(err) {
+        } catch (err) {
           console.error('[CARD] Failed to parse product data', err);
         }
         return;
@@ -560,13 +560,105 @@ function initProductCards() {
   });
 }
 
-/* ─── CONTACT FORM ─── */
+/* ─── CONTACT FORM & ANTI-SPAM ─── */
 function initContactForm() {
-  const submitBtn = document.querySelector('.btn-submit');
-  if (!submitBtn) return;
-  submitBtn.addEventListener('click', () => {
-    const t = i18n[currentLang];
-    alert(t ? t.alert_form : i18n.en.alert_form);
+  const form = document.getElementById('contactForm');
+  const statusMsg = document.getElementById('form-status-msg');
+  const submitBtn = document.getElementById('btn-submit');
+  if (!form || !statusMsg || !submitBtn) return;
+
+  // Rate Limiter: Max 3 messages per 24 hours
+  const MAX_MSGS = 3;
+  const TIME_FRAME = 24 * 60 * 60 * 1000; // 24 hours in ms
+
+  function checkRateLimit() {
+    const history = JSON.parse(localStorage.getItem('contactFormHistory') || '[]');
+    const now = Date.now();
+    // Filter history to only include messages from the last 24 hours
+    const recent = history.filter(time => now - time < TIME_FRAME);
+    return recent.length < MAX_MSGS;
+  }
+
+  function recordSubmission() {
+    const history = JSON.parse(localStorage.getItem('contactFormHistory') || '[]');
+    const now = Date.now();
+    const recent = history.filter(time => now - time < TIME_FRAME);
+    recent.push(now);
+    localStorage.setItem('contactFormHistory', JSON.stringify(recent));
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Check honeypot
+    const honey = form.elements['_honey']?.value;
+    if (honey) {
+      // Bot filled the hidden field, silently reject
+      statusMsg.style.display = 'block';
+      statusMsg.style.backgroundColor = '#d4edda';
+      statusMsg.style.color = '#155724';
+      statusMsg.textContent = 'Message sent successfully!'; // Fake success for bots
+      return;
+    }
+
+    if (!checkRateLimit()) {
+      statusMsg.style.display = 'block';
+      statusMsg.style.backgroundColor = '#f8d7da';
+      statusMsg.style.color = '#721c24';
+      const t = i18n[currentLang];
+      statusMsg.textContent = t ? (t.form_limit_error || 'You have reached the daily limit for sending messages. Please try again tomorrow.') : 'You have reached the daily limit for sending messages. Please try again tomorrow.';
+      return;
+    }
+
+    const formData = new FormData(form);
+
+    // Disable button to prevent double submit
+    submitBtn.disabled = true;
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = 'Sending...';
+    statusMsg.style.display = 'none';
+
+    fetch('https://formsubmit.co/ajax/diffunnogoodguy1945@gmail.com', {
+      method: 'POST',
+      body: formData
+      // ห้ามใส่ headers ใด ๆ ทั้งสิ้น ปล่อยโล่งแบบนี้เลยครับ เบราว์เซอร์จะจัดการส่งคู่ FormData ให้เอง
+    })
+      .then(response => {
+        if (!response.ok) {
+          // ถ้าเซิร์ฟเวอร์ตอบกลับมาว่าไม่ผ่าน (เช่น URL ผิด หรือไม่มีข้อมูล) ให้โยนข้อผิดพลาดออกไป
+          throw new Error('เซิร์ฟเวอร์ปฏิเสธการส่งข้อมูล');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.success === 'true' || data.success === true) {
+          statusMsg.style.display = 'block';
+          statusMsg.style.backgroundColor = '#d4edda';
+          statusMsg.style.color = '#155724';
+          statusMsg.textContent = 'ส่งข้อมูลสำเร็จแล้ว! สังเกตกล่องข้อความอีเมลของคุณเพื่อกดยืนยัน (Activate) ครั้งแรกด้วยนะคะ';
+          form.reset();
+          recordSubmission();
+        } else if (data.message && data.message.toLowerCase().includes('activation')) {
+          // ── Formsubmit ต้องการ Activate ครั้งแรก (ปกติ ไม่ใช่ error) ──
+          statusMsg.style.display = 'block';
+          statusMsg.style.backgroundColor = '#fff3cd';
+          statusMsg.style.color = '#856404';
+          statusMsg.innerHTML = '📧 <strong>เหลืออีก 1 ขั้นตอน!</strong><br>ระบบส่งอีเมลยืนยันไปแล้ว กรุณาเปิดอีเมลแล้วกดปุ่ม <strong>"Activate Form"</strong><br>หลังจากนั้นฟอร์มจะใช้งานได้ตลอดเลยค่ะ!';
+        } else {
+          throw new Error('Server returned false');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        statusMsg.style.display = 'block';
+        statusMsg.style.backgroundColor = '#f8d7da';
+        statusMsg.style.color = '#721c24';
+        statusMsg.textContent = 'เกิดข้อผิดพลาด: มีปัญหาบนหน้าเว็บ ไม่สามารถส่งข้อมูลได้ กรุณาเช็กชื่อคอลัมน์และอินเทอร์เน็ต';
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      });
   });
 }
 
@@ -614,7 +706,7 @@ function optimizeImageURL(imageUrl, productId) {
 }
 
 function setupImageError(imgElement, productId) {
-  imgElement.addEventListener('error', function() {
+  imgElement.addEventListener('error', function () {
     console.warn(`[IMG] Failed to load: ${productId}`);
     this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5JbWFnZSBOb3QgRm91bmQ8L3RleHQ+PC9zdmc+';
     this.classList.add('image-error');
@@ -769,7 +861,7 @@ function renderCatalog() {
   cachedSheetRows.forEach((row, index) => {
     try {
       allProducts.push(parseProductRow(row, index, cachedImgColIndex));
-    } catch(e) {
+    } catch (e) {
       console.error(`[CATALOG] Row ${index} failed:`, e);
     }
   });
@@ -915,17 +1007,17 @@ function initModal() {
 /* ─── COLLECTION TAB SWITCHING ─── */
 function initCollectionTabs() {
   const tabs = document.querySelectorAll('.collection-tab[data-tab]');
-  
+
   tabs.forEach(tab => {
     tab.addEventListener('click', (e) => {
       e.preventDefault();
-      
+
       // Update active tab styling
       tabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      
+
       const catId = tab.getAttribute('data-tab');
-      
+
       // Update active column visibility
       const columns = document.querySelectorAll('.collection-column');
       columns.forEach(col => {

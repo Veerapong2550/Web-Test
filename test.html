@@ -250,35 +250,45 @@
   <div class="contact-form-side">
     <h2 class="contact-form-title" data-i18n="contact_title">พูดคุยกับเรา</h2>
     <p class="contact-form-sub" data-i18n="contact_sub">อยากสั่งทำพิเศษ มีคำถาม หรือแค่ต้องการคนฟัง?<br>เราพร้อมตอบกลับทุกข้อความ ด้วยหัวใจ 🌿</p>
-    <div class="form-row">
-      <div class="form-group">
-        <label data-i18n-label="form_label_name">ชื่อของคุณ</label>
-        <input type="text" data-i18n-placeholder="form_placeholder_name" placeholder="ชื่อ-นามสกุล">
+    
+    <form id="contactForm" class="contact-form">
+      <!-- Formsubmit.co configuration — ไม่ต้องใช้ API Key -->
+      <input type="hidden" name="_subject" value="New message from Sweet Gypsy Design!">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="text" name="_honey" style="display:none"> <!-- Honeypot to catch bots -->
+
+      <div class="form-row">
+        <div class="form-group">
+          <label data-i18n-label="form_label_name">ชื่อของคุณ</label>
+          <input type="text" name="name" required data-i18n-placeholder="form_placeholder_name" placeholder="ชื่อ-นามสกุล">
+        </div>
+        <div class="form-group">
+          <label data-i18n-label="form_label_phone">เบอร์โทร / Line ID</label>
+          <input type="text" name="phone" required data-i18n-placeholder="form_placeholder_phone" placeholder="08X-XXX-XXXX">
+        </div>
       </div>
       <div class="form-group">
-        <label data-i18n-label="form_label_phone">เบอร์โทร / Line ID</label>
-        <input type="text" data-i18n-placeholder="form_placeholder_phone" placeholder="08X-XXX-XXXX">
+        <label data-i18n-label="form_label_email">อีเมล</label>
+        <input type="email" name="email" required data-i18n-placeholder="form_placeholder_email" placeholder="your@email.com">
       </div>
-    </div>
-    <div class="form-group">
-      <label data-i18n-label="form_label_email">อีเมล</label>
-      <input type="email" data-i18n-placeholder="form_placeholder_email" placeholder="your@email.com">
-    </div>
-    <div class="form-group">
-      <label data-i18n-label="form_label_type">ประเภท</label>
-      <select data-i18n-options="form_select_default,form_select_inquiry,form_select_custom,form_select_order,form_select_other">
-        <option value="">— เลือกประเภท —</option>
-        <option>สอบถามสินค้า</option>
-        <option>สั่งทำพิเศษ (Custom)</option>
-        <option>สั่งซื้อปกติ</option>
-        <option>อื่นๆ</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label data-i18n-label="form_label_message">ข้อความ</label>
-      <textarea data-i18n-placeholder="form_placeholder_message" placeholder="เล่าให้เราฟังได้เลย…"></textarea>
-    </div>
-    <button class="btn-submit" data-i18n="contact_send">ส่งข้อความ →</button>
+      <div class="form-group">
+        <label data-i18n-label="form_label_type">ประเภท</label>
+        <select name="type" required data-i18n-options="form_select_default,form_select_inquiry,form_select_custom,form_select_order,form_select_other">
+          <option value="">— เลือกประเภท —</option>
+          <option>สอบถามสินค้า</option>
+          <option>สั่งทำพิเศษ (Custom)</option>
+          <option>สั่งซื้อปกติ</option>
+          <option>อื่นๆ</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label data-i18n-label="form_label_message">ข้อความ</label>
+        <textarea name="message" required data-i18n-placeholder="form_placeholder_message" placeholder="เล่าให้เราฟังได้เลย…"></textarea>
+      </div>
+      <div id="form-status-msg" style="display:none; padding:10px; margin-bottom:15px; border-radius:4px; font-size:0.9rem; font-weight:500;"></div>
+      <button type="submit" class="btn-submit" id="btn-submit" data-i18n="contact_send">ส่งข้อความ →</button>
+    </form>
   </div>
 
   <div class="contact-info-side">
