@@ -1,43 +1,103 @@
 /* ============================================================
    Web3Forms Order Form Handler
-   Sweet Gypsy Design — drop-in snippet for test.js
+   Sweet Gypsy Design — drop-in snippet
    ============================================================
 
    HOW TO USE:
-   1. Copy this entire block into your test.js (or keep it as a
-      separate <script src="web3forms-handler.js"></script>).
-   2. Change the form ID on the line marked ⬇️ CHANGE THIS ⬇️
-      to match the `id` attribute of your HTML <form> element.
-   3. That's it — no other config needed.
+   1. Include this file via <script src="web3forms-handler.js"></script>
+      after test.js in your HTML.
+   2. Ensure your <form> has id="contactForm" (or change line 22).
+   3. Ensure your HTML has:
+      - <div id="form-status-msg" class="form-status-msg"></div>
+      - <div id="form-success-panel" class="form-success-panel">…</div>
+      - <button id="btn-send-another">…</button>
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', function () {
 
   // ─────────────────────────────────────────────────────
-  // ⬇️ CHANGE THIS: Replace 'orderForm' with your actual
-  //    HTML form's id attribute, e.g. 'contactForm'
+  // ⬇️ CHANGE THIS: Replace 'contactForm' with your
+  //    HTML form's id attribute if different.
   // ─────────────────────────────────────────────────────
-  const form = document.getElementById('orderForm');
+  var form = document.getElementById('contactForm');
+
+  // Grab UI elements
+  var statusMsg = document.getElementById('form-status-msg');
+  var successPanel = document.getElementById('form-success-panel');
+  var submitBtn = document.getElementById('btn-submit');
+  var sendAnother = document.getElementById('btn-send-another');
 
   // Safety check — exit silently if the form doesn't exist on the page
   if (!form) {
-    console.warn('[Web3Forms] No form found with the specified ID. Skipping handler setup.');
+    console.warn('[Web3Forms] No form found. Skipping handler setup.');
     return;
   }
 
+  // ── Helper: Show inline status message ──
+  function showStatus(type, message) {
+    if (!statusMsg) return;
+    statusMsg.textContent = message;
+    statusMsg.className = 'form-status-msg visible ' + type; // 'success' or 'error'
+  }
+
+  function hideStatus() {
+    if (!statusMsg) return;
+    statusMsg.className = 'form-status-msg';
+    statusMsg.textContent = '';
+  }
+
+  // ── Helper: Toggle between form and success panel ──
+  function showSuccessPanel() {
+    form.style.display = 'none';
+    if (successPanel) {
+      successPanel.classList.add('visible');
+    }
+  }
+
+  function showForm() {
+    if (successPanel) {
+      successPanel.classList.remove('visible');
+    }
+    form.style.display = '';
+    hideStatus();
+  }
+
+  // ── "Send Another Message" button ──
+  if (sendAnother) {
+    sendAnother.addEventListener('click', function () {
+      showForm();
+    });
+  }
+
+  // ── Form submit handler ──
   form.addEventListener('submit', function (e) {
-    // ── Step 1: Prevent the default browser reload (critical for GitHub Pages) ──
+    // Step 1: Prevent page reload (critical for GitHub Pages)
     e.preventDefault();
 
-    // ── Step 2: Collect all form inputs into a FormData object ──
-    const formData = new FormData(this);
+    // Step 2: Verify hCaptcha has been completed
+    var hCaptchaInput = this.querySelector('[name="h-captcha-response"]');
+    if (!hCaptchaInput || !hCaptchaInput.value) {
+      showStatus('error', 'Please complete the captcha verification before submitting.');
+      return;
+    }
 
-    // ── Step 3: Append the Web3Forms Access Key ──
+    // Step 3: Collect form data
+    var formData = new FormData(this);
+
+    // Step 4: Append Web3Forms access key
     formData.append('access_key', 'a8dbd6ab-2073-4472-ba30-d7dbd27f66eb');
 
-    // ── Step 4: Send the data to Web3Forms via fetch (POST) ──
-    // NOTE: Do NOT set a Content-Type header — the browser must auto-set
-    //       the multipart/form-data boundary. Setting it manually causes CORS errors.
+    // Step 5: Disable submit button to prevent double-clicks
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.dataset.originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = 'Sending…';
+    }
+    hideStatus();
+
+    // Step 6: Send to Web3Forms
+    // NOTE: Do NOT set Content-Type header — browser auto-sets
+    //       multipart/form-data boundary. Setting it manually causes CORS errors.
     fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       body: formData
@@ -46,31 +106,35 @@ document.addEventListener('DOMContentLoaded', function () {
         return response.json();
       })
       .then(function (data) {
-        // ── Step 5a: Handle success ──
         if (data.success) {
-          alert(
-            'Thank you for shopping with Sweet Gypsy Design! ' +
-            'Your order has been placed. ' +
-            'We will contact you shortly to complete the sale.'
-          );
-          // Clear all form inputs so the user can submit another order
+          // ── Success: show the success panel ──
           form.reset();
+          if (typeof hcaptcha !== 'undefined') {
+            hcaptcha.reset();
+          }
+          showSuccessPanel();
         } else {
-          // Server responded but indicated failure
+          // Server responded but indicated failure — show actual API message
           console.error('[Web3Forms] Submission failed:', data);
-          alert(
-            'Oops! Something went wrong while placing your order. ' +
-            'Please try again or contact us directly.'
+          var apiMsg = data.message || 'Unknown error';
+          showStatus('error',
+            'Web3Forms: ' + apiMsg
           );
         }
       })
       .catch(function (error) {
-        // ── Step 5b: Handle network / unexpected errors ──
-        console.error('[Web3Forms] Network or unexpected error:', error);
-        alert(
-          'We\'re sorry — a network error occurred. ' +
+        console.error('[Web3Forms] Network error:', error);
+        showStatus('error',
+          'A network error occurred. ' +
           'Please check your internet connection and try again.'
         );
+      })
+      .finally(function () {
+        // Re-enable submit button
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = submitBtn.dataset.originalText || 'Send';
+        }
       });
   });
 

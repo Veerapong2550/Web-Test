@@ -1065,7 +1065,7 @@ function initCollectionTabs() {
 document.addEventListener('DOMContentLoaded', () => {
   initNavScroll();
   initProductCards();
-  initContactForm();
+  // initContactForm(); // ← Disabled: now handled by web3forms-handler.js
   initHamburger();
   initModal();
   initCollectionTabs();

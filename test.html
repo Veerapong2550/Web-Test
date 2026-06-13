@@ -13,6 +13,8 @@
     rel="stylesheet">
   <link rel="stylesheet" href="test.css">
 
+  <!-- Web3Forms client script — handles hCaptcha automatically, no site key needed -->
+  <script src="https://web3forms.com/client/script.js" async defer></script>
 
 </head>
 
@@ -287,11 +289,10 @@
         หรือแค่ต้องการคนฟัง?<br>เราพร้อมตอบกลับทุกข้อความ ด้วยหัวใจ 🌿</p>
 
       <form id="contactForm" class="contact-form">
-        <!-- Formsubmit.co configuration — ไม่ต้องใช้ API Key -->
-        <input type="hidden" name="_subject" value="New message from Sweet Gypsy Design!">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="text" name="_honey" style="display:none"> <!-- Honeypot to catch bots -->
+        <!-- Web3Forms configuration -->
+        <input type="hidden" name="subject" value="🛍️ New Order — Sweet Gypsy Design">
+        <input type="hidden" name="from_name" value="Sweet Gypsy Website">
+        <input type="text" name="botcheck" style="display:none"> <!-- Honeypot to catch bots -->
 
         <div class="form-row">
           <div class="form-group">
@@ -326,11 +327,22 @@
           <textarea name="message" required data-i18n-placeholder="form_placeholder_message"
             placeholder="เล่าให้เราฟังได้เลย…"></textarea>
         </div>
-        <div id="form-status-msg"
-          style="display:none; padding:10px; margin-bottom:15px; border-radius:4px; font-size:0.9rem; font-weight:500;">
-        </div>
+        <div id="form-status-msg" class="form-status-msg"></div>
+
+        <!-- Web3Forms auto-managed hCaptcha — no site key required -->
+        <div class="h-captcha" data-captcha="true" style="margin-bottom:1rem"></div>
+
         <button type="submit" class="btn-submit" id="btn-submit" data-i18n="contact_send">ส่งข้อความ →</button>
       </form>
+
+      <!-- Success panel — shown after successful submission, replaces the form -->
+      <div id="form-success-panel" class="form-success-panel">
+        <div class="success-icon">✓</div>
+        <h3 class="success-title">Message Sent Successfully!</h3>
+        <p class="success-desc">Thank you for shopping with Sweet Gypsy Design!<br>Your order has been placed. We will
+          contact you shortly to complete the sale.</p>
+        <button type="button" class="btn-primary success-reset-btn" id="btn-send-another">Send Another Message</button>
+      </div>
     </div>
 
     <div class="contact-info-side">
@@ -399,6 +411,8 @@
 
 
   <script src="test.js"></script>
+  <script src="web3forms-handler.js"></script>
+
 </body>
 
 </html>

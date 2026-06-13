@@ -1005,6 +1005,106 @@ section {
   background: #b8934f;
 }
 
+.btn-submit:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+  background: #9a7d4a;
+}
+
+/* ─── FORM STATUS MESSAGE ─── */
+.form-status-msg {
+  display: none;
+  padding: .9rem 1.2rem;
+  margin-bottom: 1rem;
+  border-radius: 3px;
+  font-size: .85rem;
+  font-weight: 400;
+  line-height: 1.5;
+  animation: statusSlideIn .35s ease;
+}
+
+.form-status-msg.visible {
+  display: block;
+}
+
+.form-status-msg.success {
+  background: rgba(46, 204, 113, .15);
+  color: #2ecc71;
+  border: 1px solid rgba(46, 204, 113, .3);
+}
+
+.form-status-msg.error {
+  background: rgba(231, 76, 60, .15);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, .3);
+}
+
+@keyframes statusSlideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── FORM SUCCESS PANEL (replaces form after submit) ─── */
+.form-success-panel {
+  display: none;
+  text-align: center;
+  padding: 3.5rem 2rem;
+  animation: successFadeIn .5s ease;
+}
+
+.form-success-panel.visible {
+  display: block;
+}
+
+.success-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 8px 30px rgba(46, 204, 113, .35);
+  animation: successBounce .6s ease .2s both;
+}
+
+.success-title {
+  font-family: var(--heading-font), serif;
+  font-size: 1.8rem;
+  color: var(--cream);
+  font-weight: 300;
+  margin-bottom: .75rem;
+}
+
+.success-desc {
+  font-size: .9rem;
+  color: rgba(250, 246, 240, .6);
+  line-height: 1.7;
+  max-width: 400px;
+  margin: 0 auto 2rem;
+}
+
+.success-reset-btn {
+  border: none;
+  cursor: pointer;
+  font-family: var(--body-font), sans-serif;
+}
+
+@keyframes successFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes successBounce {
+  0%   { transform: scale(0); opacity: 0; }
+  60%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
 .contact-info-side {
   padding-top: 1rem;
 }
